@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bark Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<h1 class="page-title">Bark Data 🐶</h1>
+
+<div class="dashboard">
+    <p>Data pulled on {{ timestamp }}</p>
+    <div class="chart-section">
+        <h2>Today</h2>
+        <p id="todayText"></p>
+    </div>
+    <div class="chart-section">
+        <h2>Quick Insights</h2>
+        <div class="chart-grid">
+            <div class="chart-container">
+                <canvas id="hourlyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="weekdayChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="chart-section">
+        <h2>Trends</h2>
+        <div class="chart-grid">
+            <div class="chart-container">
+                <canvas id="dailyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="chart-section">
+        <h2>Sessions</h2>
+        <div class="chart-grid">
+            <div class="chart-container">
+                <canvas id="durationDailyAvgChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="durationDailyMaxChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadToday(){
+        fetch("/data/today")
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById("todayText").textContent =
+                    `The dogs have barked ${data.count} time(s) today for a total duration of ${data.duration}.`
+            });
+    }
+
+    function loadChart(canvasId, endpoint, label, type){
+        fetch(endpoint)
+            .then(r => r.json())
+            .then(data => {
+                const ctx = document.getElementById(canvasId);
+
+                new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: label,
+                            data: data.values,
+                            tension: 0.3,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            });
+    }
+
+    loadToday();
+    loadChart("hourlyChart", "/data/hourly", "Barks by Hour", "bar");
+    loadChart("weekdayChart", "/data/weekday", "Barks by Day of Week", "bar");
+    loadChart("dailyChart", "/data/daily", "Barks per Day", "line");
+    loadChart("monthlyChart", "/data/monthly", "Barks per Month", "line");
+    loadChart("durationDailyAvgChart", "/data/daily_avg_duration", 
+        "Average Bark Duration by Day (in seconds)", "line");
+    loadChart("durationDailyMaxChart", "/data/daily_max_duration", 
+        "Longest Bark Duration per Day (in seconds)", "line");
+</script>
+
+
+</body>
+</html>

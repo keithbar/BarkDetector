@@ -1,0 +1,6 @@
+.venv/
+.vscode/
+bark_log_dummy.csv
+bark_log.csv
+yamnet_class_map.csv
+yamnet.tflite
