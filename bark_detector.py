@@ -7,6 +7,23 @@ import time
 from datetime import datetime
 import queue
 
+# Check for YAMNet and TFLite files
+model_files_exist = os.path.exists("yamnet.tflite")
+if not model_files_exist:
+    print("Required file yamnet.tflite not found. See readme for more information.")
+    quit()
+model_files_exist = os.path.exists("yamnet_class_map.csv")
+if not model_files_exist:
+    print("Required file yamnet_class_map.csv not found. See readme for more information.")
+    quit()
+
+# Check for microphone access
+try:
+    default_input_device = sd.query_devices(kind="input")
+except sd.PortAudioError:
+    print("No microphones found. Exiting program.")
+    quit()
+
 # Load YAMNet class map
 import csv as csvlib
 with open("yamnet_class_map.csv", newline='') as f:
@@ -79,7 +96,7 @@ last_bark_time = None
 last_bark_print_time = None
 BARK_TIMEOUT = 1.5  # seconds of silence to end a bark session
 
-print("Listening... Press Ctrl+C to stop.")
+print(f"Listening with {default_input_device['name']}... Press Ctrl+C to stop.")
 
 # Main program loop
 # Listen to audio from microphone, pass to inference model, record dog barks to disk
