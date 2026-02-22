@@ -1,6 +1,7 @@
 .DS_Store
 .venv/
 .vscode/
+1.tflite
 bark_log_dummy.csv
 bark_log.csv
 yamnet_class_map.csv

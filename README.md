@@ -82,12 +82,15 @@ This project uses YAMNet in TensorFlow Lite format. These are not included due t
 
 You must download:
 
+- `1.tflite`
 - `yamnet_class_map.csv`
-- `yamnet.tflite`
 
 Place them in the project's root directory.
 
-They can be found here: https://www.kaggle.com/models/google/yamnet/tfLite
+`1.tflite` can be found here: https://www.kaggle.com/models/google/yamnet/tfLite
+Scroll down to "Model Variations", select "LiteRT (formerly TFLite)" and "classification-tflite" as the variation. Scroll down to "File Explorer" and click the download icon. File should be approximately 4.13 MB.
+
+`yamnet_class_map.csv` can be found at TensorFlow's GitHub repository here: https://github.com/tensorflow/models/blob/master/research/audioset/yamnet/yamnet_class_map.csv
 
 ---
 

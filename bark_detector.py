@@ -8,9 +8,9 @@ from datetime import datetime
 import queue
 
 # Check for YAMNet and TFLite files
-model_files_exist = os.path.exists("yamnet.tflite")
+model_files_exist = os.path.exists("1.tflite")
 if not model_files_exist:
-    print("Required file yamnet.tflite not found. See readme for more information.")
+    print("Required file 1.tflite not found. See readme for more information.")
     quit()
 model_files_exist = os.path.exists("yamnet_class_map.csv")
 if not model_files_exist:
@@ -42,7 +42,7 @@ DOG_CLASSES = set(name.lower() for name in {
 CONFIDENCE = 0.2
 
 # Load and set up the TFLite model
-interpreter = Interpreter(model_path="yamnet.tflite")
+interpreter = Interpreter(model_path="1.tflite")
 interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
